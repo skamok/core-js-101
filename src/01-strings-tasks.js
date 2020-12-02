@@ -203,7 +203,6 @@ function extractEmails(str) {
  *
  */
 function getRectangleString(width, height) {
-  console.log(`${width}, ${height}`);
   let str = '';
   for (let index = 0; index < height; index += 1) {
     if (index === 0) {
@@ -234,8 +233,19 @@ function getRectangleString(width, height) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  let ret = '';
+  for (let index = 0; index < str.length; index += 1) {
+    const code = str.charCodeAt(index);
+    if (((code > 64) && (code < 78)) || ((code > 96) && (code < 110))) {
+      ret += String.fromCharCode(code + 13);
+    } else if (((code > 77) && (code < 91)) || ((code > 109) && (code < 123))) {
+      ret += String.fromCharCode(code - 13);
+    } else {
+      ret += str[index];
+    }
+  }
+  return ret;
 }
 
 /**
@@ -251,8 +261,13 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  if (!value) return false;
+  const str = value;
+  if ((typeof str.valueOf()) === 'string') {
+    return true;
+  }
+  return false;
 }
 
 
@@ -280,8 +295,13 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const deck = [
+    'A♣', '2♣', '3♣', '4♣', '5♣', '6♣', '7♣', '8♣', '9♣', '10♣', 'J♣', 'Q♣', 'K♣',
+    'A♦', '2♦', '3♦', '4♦', '5♦', '6♦', '7♦', '8♦', '9♦', '10♦', 'J♦', 'Q♦', 'K♦',
+    'A♥', '2♥', '3♥', '4♥', '5♥', '6♥', '7♥', '8♥', '9♥', '10♥', 'J♥', 'Q♥', 'K♥',
+    'A♠', '2♠', '3♠', '4♠', '5♠', '6♠', '7♠', '8♠', '9♠', '10♠', 'J♠', 'Q♠', 'K♠'];
+  return deck.findIndex((element) => element === value);
 }
 
 
