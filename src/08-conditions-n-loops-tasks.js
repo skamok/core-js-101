@@ -94,8 +94,11 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  if ((a < (b + c)) && (b < (a + c)) && (c < (b + a))) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -131,8 +134,11 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  if (rect2.top <= (rect1.top + rect1.height) && (rect2.left <= (rect1.left + rect1.width))) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -162,8 +168,14 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const a = Math.abs(point.x - circle.center.x);
+  const b = Math.abs(point.y - circle.center.y);
+  const c = Math.sqrt(a ** 2 + b ** 2);
+  if (c < circle.radius) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -178,8 +190,13 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  for (let i = 0; i < str.length - 1; i += 1) {
+    if ((str.lastIndexOf(str[i]) === i) && (str.indexOf(str[i]) === i)) {
+      return str[i];
+    }
+  }
+  return null;
 }
 
 
@@ -205,8 +222,8 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  return `${isStartIncluded ? '[' : '('}${a < b ? a : b}, ${b > a ? b : a}${isEndIncluded ? ']' : ')'}`;
 }
 
 
@@ -222,8 +239,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -239,8 +256,9 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  const str = num.toString();
+  return Number.parseInt(str.split('').reverse().join(''), 10);
 }
 
 
@@ -264,8 +282,25 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const arr = ccn.toString().split('').reverse();
+  const sum = arr.reduce((acc, curr, ind) => {
+    const nmb = Number.parseInt(curr, 10);
+    let tmp = 0;
+    if ((ind + 1) % 2 === 0) {
+      tmp = nmb * 2;
+      if (tmp > 9) {
+        tmp = Math.floor(tmp / 10) + (tmp % 10);
+      }
+    } else {
+      tmp = nmb;
+    }
+    return acc + tmp;
+  }, 0);
+  if (sum % 10 === 0) {
+    return true;
+  }
+  return false;
 }
 
 /**
