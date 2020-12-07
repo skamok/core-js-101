@@ -317,8 +317,10 @@ function isCreditCardNumber(ccn) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  if (num < 10) return num;
+  const sum = num.toString().split('').reduce((acc, curr) => acc + Number.parseInt(curr, 10), 0);
+  return getDigitalRoot(sum);
 }
 
 
@@ -343,10 +345,51 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  if (str === '') return true;
+  if (str.length % 2 !== 0) return false;
+  const arr = [];
+  for (let i = 0; i < str.length; i += 1) {
+    if (i === 0) {
+      arr.push(str[i]);
+    } else {
+      switch (str[i]) {
+        case ']':
+          if (arr[arr.length - 1] === '[') {
+            arr.pop();
+          } else {
+            arr.push(str[i]);
+          }
+          break;
+        case '}':
+          if (arr[arr.length - 1] === '{') {
+            arr.pop();
+          } else {
+            arr.push(str[i]);
+          }
+          break;
+        case ')':
+          if (arr[arr.length - 1] === '(') {
+            arr.pop();
+          } else {
+            arr.push(str[i]);
+          }
+          break;
+        case '>':
+          if (arr[arr.length - 1] === '<') {
+            arr.pop();
+          } else {
+            arr.push(str[i]);
+          }
+          break;
+        default:
+          arr.push(str[i]);
+      }
+    }
+  }
+  if (arr.length === 0) return true;
+  return false;
 }
-
 
 /**
  * Returns the string with n-ary (binary, ternary, etc, where n <= 10)
